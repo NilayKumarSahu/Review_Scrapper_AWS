@@ -1,18 +1,18 @@
-from flask import Flask, render_template, request, jsonify
-from flask_cors import CORS, cross_origin
+from flask import Flask, render_template, request,jsonify
+from flask_cors import CORS,cross_origin
 import requests
 from bs4 import BeautifulSoup as bs
 from urllib.request import urlopen as uReq
 import logging
-logging.basicConfig(filename ='Scrapper.log', level=logging.INFO)
-application = Flask(__name__)
-app=application
+logging.basicConfig(filename="scrapper.log" , level=logging.INFO)
+
+app = Flask(__name__)
+
 @app.route("/", methods = ['GET'])
 def homepage():
-    return render_template('index.html')
+    return render_template("index.html")
 
-@app.route("/review" , methods = ['POST' , 'GET'])    
-@cross_origin()
+@app.route("/review" , methods = ['POST' , 'GET'])
 def index():
     if request.method == 'POST':
         try:
@@ -71,8 +71,8 @@ def index():
                 mydict = {"Product": searchString, "Name": name, "Rating": rating, "CommentHead": commentHead,
                           "Comment": custComment}
                 reviews.append(mydict)
-            logging.info("log my final result {}".format(reviews))    
-            return render_template('results.html', reviews=reviews[0:(len(reviews)-1)])
+            logging.info("log my final result {}".format(reviews))
+            return render_template('result.html', reviews=reviews[0:(len(reviews)-1)])
         except Exception as e:
             logging.info(e)
             return 'something is wrong'
@@ -80,6 +80,7 @@ def index():
 
     else:
         return render_template('index.html')
+
 
 if __name__=="__main__":
     app.run(host="0.0.0.0")
